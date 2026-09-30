@@ -1,0 +1,284 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Home - Smart Traffic Violation Logger
+{% endblock %}
+
+
+{% block content %}
+
+
+<!-- ========================================================= -->
+<!-- PAGE HEADER -->
+<!-- ========================================================= -->
+
+<div class="page-header">
+
+    <div class="page-kicker">
+        Traffic Management
+    </div>
+
+
+    <h1 class="page-title">
+        Smart Traffic Violation Logger
+    </h1>
+
+
+    <p class="page-description">
+        Record and manage traffic violations, review violation history,
+        update payment status and access digital challans.
+    </p>
+
+</div>
+
+
+<!-- ========================================================= -->
+<!-- MAIN HOME SECTION -->
+<!-- ========================================================= -->
+
+<section class="home-section">
+
+
+    <div class="home-hero">
+
+
+        <!-- ================================================= -->
+        <!-- MAIN ACTION AREA -->
+        <!-- ================================================= -->
+
+        <div class="hero-main">
+
+
+            <div class="hero-eyebrow">
+                Digital Traffic Violation System
+            </div>
+
+
+            <h2 class="hero-title">
+                Manage traffic violation records clearly and efficiently.
+            </h2>
+
+
+            <p class="hero-description">
+                Create violation records, review vehicle history,
+                manage challan payment status and provide QR-based
+                public verification.
+            </p>
+
+
+            <div class="hero-actions">
+
+
+                <a
+                    href="{{ url_for('add_violation') }}"
+                    class="btn btn-warning"
+                >
+
+                    <i class="bi bi-plus-lg"></i>
+
+                    Add Violation
+
+                </a>
+
+
+                <a
+                    href="{{ url_for('history') }}"
+                    class="btn btn-outline-light"
+                >
+
+                    <i class="bi bi-list-check"></i>
+
+                    View Violation History
+
+                </a>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- SUPPORTING ACTIONS -->
+        <!-- ================================================= -->
+
+        <div class="hero-side">
+
+
+            <a
+                href="{{ url_for('add_violation') }}"
+                class="hero-side-card"
+            >
+
+                <div class="hero-side-icon">
+
+                    <i class="bi bi-file-earmark-plus"></i>
+
+                </div>
+
+
+                <div class="hero-side-title">
+                    Record a Violation
+                </div>
+
+
+                <div class="hero-side-description">
+
+                    Create a new record with the required
+                    vehicle and violation details.
+
+                </div>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('history') }}"
+                class="hero-side-card"
+            >
+
+                <div class="hero-side-icon">
+
+                    <i class="bi bi-search"></i>
+
+                </div>
+
+
+                <div class="hero-side-title">
+                    Search Records
+                </div>
+
+
+                <div class="hero-side-description">
+
+                    Search vehicle history and filter
+                    recorded violations.
+
+                </div>
+
+            </a>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- CORE FUNCTIONS -->
+    <!-- ================================================= -->
+
+    <div class="section-heading">
+
+
+        <h2 class="section-title">
+            Core Functions
+        </h2>
+
+
+        <p class="section-description">
+            The essential tools for managing traffic violation records.
+        </p>
+
+
+    </div>
+
+
+    <div class="feature-grid">
+
+
+        <!-- Add Violation -->
+
+        <a
+            href="{{ url_for('add_violation') }}"
+            class="feature-card"
+        >
+
+            <div class="feature-icon">
+
+                <i class="bi bi-file-earmark-plus"></i>
+
+            </div>
+
+
+            <h3 class="feature-title">
+                Add Violation
+            </h3>
+
+
+            <p class="feature-description">
+
+                Record vehicle number, violation type,
+                location, date and fine amount.
+
+            </p>
+
+        </a>
+
+
+        <!-- History -->
+
+        <a
+            href="{{ url_for('history') }}"
+            class="feature-card"
+        >
+
+            <div class="feature-icon">
+
+                <i class="bi bi-clock-history"></i>
+
+            </div>
+
+
+            <h3 class="feature-title">
+                Violation History
+            </h3>
+
+
+            <p class="feature-description">
+
+                Search previous records and filter them
+                by vehicle, date, type or payment status.
+
+            </p>
+
+        </a>
+
+
+        <!-- Challan -->
+
+        <a
+            href="{{ url_for('history') }}"
+            class="feature-card"
+        >
+
+            <div class="feature-icon">
+
+                <i class="bi bi-qr-code"></i>
+
+            </div>
+
+
+            <h3 class="feature-title">
+                Digital Challan
+            </h3>
+
+
+            <p class="feature-description">
+
+                Access digital challans and QR-based
+                public violation status verification.
+
+            </p>
+
+        </a>
+
+
+    </div>
+
+
+</section>
+
+
+{% endblock %}

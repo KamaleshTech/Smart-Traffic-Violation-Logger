@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}
+Officer Login | Smart Traffic Violation Logger
+{% endblock %}
+
+
+{% block content %}
+
+<div class="app-container auth-page">
+
+    <div class="auth-wrap">
+
+        <section class="auth-card">
+
+
+            <header class="auth-header">
+
+                <div class="auth-kicker">
+                    Officer Access
+                </div>
+
+                <h1 class="auth-title">
+                    Officer Login
+                </h1>
+
+                <p class="auth-description">
+                    Sign in to manage traffic violation records.
+                </p>
+
+            </header>
+
+
+            <div class="auth-body">
+
+                <form
+                    method="POST"
+                    action="{{ url_for('login') }}"
+                >
+
+                    <input
+                        type="hidden"
+                        name="next"
+                        value="{{ next_page or '' }}"
+                    >
+
+
+                    <div class="mb-3">
+
+                        <label
+                            for="username"
+                            class="auth-label"
+                        >
+                            Username
+                        </label>
+
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            class="form-control auth-input"
+                            placeholder="Enter username"
+                            autocomplete="username"
+                            required
+                            autofocus
+                        >
+
+                    </div>
+
+
+                    <div class="mb-4">
+
+                        <label
+                            for="password"
+                            class="auth-label"
+                        >
+                            Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            class="form-control auth-input"
+                            placeholder="Enter password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="auth-submit"
+                    >
+
+                        <i class="bi bi-box-arrow-in-right"></i>
+
+                        Sign In
+
+                    </button>
+
+
+                    <div class="auth-note">
+
+                        <i class="bi bi-shield-check me-1"></i>
+
+                        Officer authentication is used for
+                        adding and managing violation records.
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</div>
+
+{% endblock %}

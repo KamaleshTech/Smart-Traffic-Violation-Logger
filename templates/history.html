@@ -1,0 +1,448 @@
+{% extends "base.html" %}
+
+{% block title %}
+Violation History | Smart Traffic Violation Logger
+{% endblock %}
+
+
+{% block content %}
+
+<div class="app-container history-page">
+
+
+    <!-- Header -->
+
+    <section class="history-header">
+
+        <div>
+
+            <div class="page-kicker">
+                Record Management
+            </div>
+
+            <h1 class="page-title">
+                Violation History
+            </h1>
+
+            <p class="page-description">
+                Search, filter and manage recorded traffic violations.
+            </p>
+
+        </div>
+
+
+        <a
+            href="{{ url_for('add_violation') }}"
+            class="btn-app-primary"
+        >
+            <i class="bi bi-plus-lg"></i>
+            Add Violation
+        </a>
+
+    </section>
+
+
+    <!-- Filters -->
+
+    <section class="history-filter">
+
+        <div class="filter-heading">
+
+            <h2 class="filter-title">
+                Search & Filter
+            </h2>
+
+            <p class="filter-description">
+                Narrow the records using one or more criteria.
+            </p>
+
+        </div>
+
+
+        <form method="GET">
+
+            <div class="row g-3 align-items-end">
+
+
+                <div class="col-12 col-md-6 col-lg-3">
+
+                    <label
+                        for="vehicle_number"
+                        class="filter-label"
+                    >
+                        Vehicle Number
+                    </label>
+
+                    <input
+                        type="text"
+                        id="vehicle_number"
+                        name="vehicle_number"
+                        class="form-control filter-input"
+                        placeholder="e.g. TN28AB1234"
+                        value="{{ request.args.get('vehicle_number', '') }}"
+                    >
+
+                </div>
+
+
+                <div class="col-12 col-md-6 col-lg-3">
+
+                    <label
+                        for="date"
+                        class="filter-label"
+                    >
+                        Date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="date"
+                        name="date"
+                        class="form-control filter-input"
+                        value="{{ request.args.get('date', '') }}"
+                    >
+
+                </div>
+
+
+                <div class="col-12 col-md-6 col-lg-2">
+
+                    <label
+                        for="status"
+                        class="filter-label"
+                    >
+                        Status
+                    </label>
+
+                    <select
+                        id="status"
+                        name="status"
+                        class="form-select filter-select"
+                    >
+
+                        <option value="">
+                            All Status
+                        </option>
+
+                        <option
+                            value="Unpaid"
+                            {% if request.args.get('status') == 'Unpaid' %}selected{% endif %}
+                        >
+                            Unpaid
+                        </option>
+
+                        <option
+                            value="Paid"
+                            {% if request.args.get('status') == 'Paid' %}selected{% endif %}
+                        >
+                            Paid
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="col-12 col-md-6 col-lg-2">
+
+                    <label
+                        for="violation_type"
+                        class="filter-label"
+                    >
+                        Violation Type
+                    </label>
+
+                    <select
+                        id="violation_type"
+                        name="violation_type"
+                        class="form-select filter-select"
+                    >
+
+                        <option value="">
+                            All Types
+                        </option>
+
+                        <option value="No Helmet"
+                            {% if request.args.get('violation_type') == 'No Helmet' %}selected{% endif %}
+                        >
+                            No Helmet
+                        </option>
+
+                        <option value="Overspeeding"
+                            {% if request.args.get('violation_type') == 'Overspeeding' %}selected{% endif %}
+                        >
+                            Overspeeding
+                        </option>
+
+                        <option value="Signal Violation"
+                            {% if request.args.get('violation_type') == 'Signal Violation' %}selected{% endif %}
+                        >
+                            Signal Violation
+                        </option>
+
+                        <option value="Drunk Driving"
+                            {% if request.args.get('violation_type') == 'Drunk Driving' %}selected{% endif %}
+                        >
+                            Drunk Driving
+                        </option>
+
+                        <option value="No Seat Belt"
+                            {% if request.args.get('violation_type') == 'No Seat Belt' %}selected{% endif %}
+                        >
+                            No Seat Belt
+                        </option>
+
+                        <option value="Wrong Parking"
+                            {% if request.args.get('violation_type') == 'Wrong Parking' %}selected{% endif %}
+                        >
+                            Wrong Parking
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="col-12 col-lg-2">
+
+                    <div class="filter-actions">
+
+                        <button
+                            type="submit"
+                            class="btn-app-primary"
+                        >
+                            <i class="bi bi-search"></i>
+                            Search
+                        </button>
+
+                        <a
+                            href="{{ url_for('history') }}"
+                            class="btn-app-secondary"
+                        >
+                            Clear
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </section>
+
+
+    <!-- Results -->
+
+    <div class="results-heading">
+
+        <h2 class="results-title">
+            Recorded Violations
+        </h2>
+
+        <span class="results-count">
+            {{ violations|length }} record{% if violations|length != 1 %}s{% endif %}
+        </span>
+
+    </div>
+
+
+    {% if violations %}
+
+        <div class="table-shell">
+
+            <table class="history-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Vehicle</th>
+                        <th>Violation</th>
+                        <th>Location</th>
+                        <th>Date</th>
+                        <th>Fine</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for violation in violations %}
+
+                        <tr>
+
+                            <td>
+                                #{{ violation.id }}
+                            </td>
+
+
+                            <td>
+
+                                <span class="vehicle-chip">
+                                    {{ violation.vehicle_number }}
+                                </span>
+
+                            </td>
+
+
+                            <td>
+                                {{ violation.violation_type }}
+                            </td>
+
+
+                            <td>
+                                <i class="bi bi-geo-alt me-1 text-muted"></i>
+                                {{ violation.location }}
+                            </td>
+
+
+                            <td>
+                                {{ violation.violation_date.strftime('%d %b %Y') }}
+                            </td>
+
+
+                            <td>
+                                ₹{{ "%.2f"|format(violation.fine_amount) }}
+                            </td>
+
+
+                            <td>
+
+                                {% if violation.status == "Paid" %}
+
+                                    <span class="status-pill paid">
+                                        Paid
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="status-pill unpaid">
+                                        Unpaid
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <td>
+
+                                <div class="table-actions">
+
+
+                                    <a
+                                        href="{{ url_for('challan', violation_id=violation.id) }}"
+                                        class="table-action action-view"
+                                        title="View Challan"
+                                    >
+                                        <i class="bi bi-qr-code"></i>
+                                        Challan
+                                    </a>
+
+
+                                    <form
+                                        method="POST"
+                                        action="{{ url_for('update_status', violation_id=violation.id) }}"
+                                        class="d-inline"
+                                    >
+
+                                        <button
+                                            type="submit"
+                                            class="table-action action-status {% if violation.status == 'Unpaid' %}paid-action{% endif %}"
+                                            title="Change status"
+                                        >
+
+                                            {% if violation.status == "Unpaid" %}
+                                                <i class="bi bi-check2"></i>
+                                                Paid
+                                            {% else %}
+                                                <i class="bi bi-arrow-counterclockwise"></i>
+                                                Unpaid
+                                            {% endif %}
+
+                                        </button>
+
+                                    </form>
+
+
+                                    <a
+                                        href="{{ url_for('edit_violation', violation_id=violation.id) }}"
+                                        class="table-action action-edit"
+                                        title="Edit Violation"
+                                    >
+                                        <i class="bi bi-pencil"></i>
+                                        Edit
+                                    </a>
+
+
+                                    <form
+                                        method="POST"
+                                        action="{{ url_for('delete_violation', violation_id=violation.id) }}"
+                                        class="d-inline"
+                                        onsubmit="return confirm('Delete this violation record?');"
+                                    >
+
+                                        <button
+                                            type="submit"
+                                            class="table-action action-delete"
+                                            title="Delete Violation"
+                                        >
+                                            <i class="bi bi-trash3"></i>
+                                            Delete
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+    {% else %}
+
+        <div class="empty-state">
+
+            <div class="empty-icon">
+                <i class="bi bi-inbox"></i>
+            </div>
+
+            <h3>
+                No violation records found
+            </h3>
+
+            <p>
+                No records match the current search or filter criteria.
+            </p>
+
+            <a
+                href="{{ url_for('add_violation') }}"
+                class="btn-app-primary"
+            >
+                <i class="bi bi-plus-lg"></i>
+                Add Violation
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

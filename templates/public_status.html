@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block title %}
+Traffic Violation Status | Smart Traffic Violation Logger
+{% endblock %}
+
+
+{% block content %}
+
+<div class="app-container public-page">
+
+    <section class="public-card">
+
+
+        <!-- Header -->
+
+        <header class="public-header">
+
+            <div class="public-kicker">
+                Public Verification
+            </div>
+
+            <h1 class="public-title">
+                Traffic Violation Status
+            </h1>
+
+            <p class="public-subtitle">
+                View the current status of this digital challan.
+            </p>
+
+        </header>
+
+
+        <!-- Body -->
+
+        <div class="public-body">
+
+
+            <div class="public-challan">
+
+                Challan
+
+                <strong>
+                    #{{ "%04d"|format(violation.id) }}
+                </strong>
+
+            </div>
+
+
+            <div class="public-details">
+
+
+                <div class="public-row">
+
+                    <span class="public-label">
+                        Vehicle Number
+                    </span>
+
+                    <span class="public-value">
+                        {{ violation.vehicle_number }}
+                    </span>
+
+                </div>
+
+
+                <div class="public-row">
+
+                    <span class="public-label">
+                        Violation Type
+                    </span>
+
+                    <span class="public-value">
+                        {{ violation.violation_type }}
+                    </span>
+
+                </div>
+
+
+                <div class="public-row">
+
+                    <span class="public-label">
+                        Location
+                    </span>
+
+                    <span class="public-value">
+                        {{ violation.location }}
+                    </span>
+
+                </div>
+
+
+                <div class="public-row">
+
+                    <span class="public-label">
+                        Date
+                    </span>
+
+                    <span class="public-value">
+                        {{ violation.violation_date.strftime('%d %B %Y') }}
+                    </span>
+
+                </div>
+
+
+                <div class="public-row">
+
+                    <span class="public-label">
+                        Fine Amount
+                    </span>
+
+                    <span class="public-value">
+                        ₹{{ "%.2f"|format(violation.fine_amount) }}
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            {% if violation.status == "Paid" %}
+
+                <div class="public-status-box paid">
+
+                    <div class="public-status-label">
+                        Payment Status
+                    </div>
+
+                    <div class="public-status-value">
+                        Paid
+                    </div>
+
+                </div>
+
+            {% else %}
+
+                <div class="public-status-box unpaid">
+
+                    <div class="public-status-label">
+                        Payment Status
+                    </div>
+
+                    <div class="public-status-value">
+                        Unpaid
+                    </div>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}
