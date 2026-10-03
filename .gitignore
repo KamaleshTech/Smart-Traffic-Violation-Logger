@@ -1,0 +1,22 @@
+﻿# Python
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Flask / local database
+instance/
+*.db
+
+# Environment variables
+.env
+
+# Generated QR codes
+static/qrcodes/*.png
+
+# OS files
+.DS_Store
+Thumbs.db

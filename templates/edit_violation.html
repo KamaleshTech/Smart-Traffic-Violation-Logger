@@ -1,255 +1,138 @@
 {% extends "base.html" %}
 
 {% block title %}
-Edit Violation - Smart Traffic Violation Logger
+Edit Violation | Smart Traffic Violation Logger
 {% endblock %}
 
-
 {% block content %}
-
-<div class="page-shell">
-
-    <div class="page-header">
-
-        <div class="page-kicker">
-            Record Update
-        </div>
-
-        <h1 class="page-title">
-            Edit Violation
-        </h1>
-
-        <p class="page-description">
-            Update the details of the selected traffic violation.
-        </p>
-
+<div class="app-container form-page">
+    <div class="page-heading">
+        <div class="page-kicker">Record Update</div>
+        <h1 class="page-title">Edit Violation</h1>
+        <p class="page-description">Update the selected traffic record for Violation #{{ violation.id }}.</p>
     </div>
 
-
-    <div class="row justify-content-center">
-
-        <div class="col-lg-8 col-xl-7">
-
-            <div class="app-card">
-
-
-                <div class="app-card-header">
-
-                    <div>
-
-                        <h2 class="app-card-title">
-                            Violation #{{ violation.id }}
-                        </h2>
-
-                        <p class="app-card-description">
-                            Update the record details below.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="app-card-body">
-
-                    <form method="POST">
-
-
-                        <!-- Vehicle -->
-
-                        <div class="form-section">
-
-                            <div class="form-section-title">
-                                Vehicle Information
-                            </div>
-
-                            <label
-                                for="vehicle_number"
-                                class="form-label"
-                            >
-                                Vehicle Number
-                            </label>
-
-                            <input
-                                type="text"
-                                class="form-control"
-                                id="vehicle_number"
-                                name="vehicle_number"
-                                value="{{ violation.vehicle_number }}"
-                                maxlength="20"
-                                required
-                            >
-
-                        </div>
-
-
-                        <!-- Violation -->
-
-                        <div class="form-section">
-
-                            <div class="form-section-title">
-                                Violation Information
-                            </div>
-
-
-                            <div class="mb-3">
-
-                                <label
-                                    for="violation_type"
-                                    class="form-label"
-                                >
-                                    Violation Type
-                                </label>
-
-                                <select
-                                    class="form-select"
-                                    id="violation_type"
-                                    name="violation_type"
-                                    required
-                                >
-
-                                    {% for type in [
-                                        "No Helmet",
-                                        "Overspeeding",
-                                        "Signal Violation",
-                                        "Drunk Driving",
-                                        "No Seat Belt",
-                                        "Wrong Parking"
-                                    ] %}
-
-                                        <option
-                                            value="{{ type }}"
-                                            {% if violation.violation_type == type %}
-                                                selected
-                                            {% endif %}
-                                        >
-                                            {{ type }}
-                                        </option>
-
-                                    {% endfor %}
-
-                                </select>
-
-                            </div>
-
-
-                            <div class="mb-3">
-
-                                <label
-                                    for="location"
-                                    class="form-label"
-                                >
-                                    Location
-                                </label>
-
-                                <input
-                                    type="text"
-                                    class="form-control"
-                                    id="location"
-                                    name="location"
-                                    value="{{ violation.location }}"
-                                    maxlength="150"
-                                    required
-                                >
-
-                            </div>
-
-
-                            <div>
-
-                                <label
-                                    for="violation_date"
-                                    class="form-label"
-                                >
-                                    Date
-                                </label>
-
-                                <input
-                                    type="date"
-                                    class="form-control"
-                                    id="violation_date"
-                                    name="violation_date"
-                                    value="{{ violation.violation_date }}"
-                                    required
-                                >
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- Fine -->
-
-                        <div class="form-section">
-
-                            <div class="form-section-title">
-                                Fine Information
-                            </div>
-
-
-                            <label
-                                for="fine_amount"
-                                class="form-label"
-                            >
-                                Fine Amount
-                            </label>
-
-                            <div class="input-group">
-
-                                <span class="input-group-text">
-                                    ₹
-                                </span>
-
-                                <input
-                                    type="number"
-                                    class="form-control"
-                                    id="fine_amount"
-                                    name="fine_amount"
-                                    value="{{ violation.fine_amount }}"
-                                    min="0"
-                                    step="0.01"
-                                    required
-                                >
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- Actions -->
-
-                        <div class="d-flex gap-2">
-
-                            <a
-                                href="{{ url_for('history') }}"
-                                class="btn btn-outline-secondary flex-fill"
-                            >
-                                Cancel
-                            </a>
-
-                            <button
-                                type="submit"
-                                class="btn btn-warning flex-fill"
-                            >
-
-                                <i class="bi bi-check2"></i>
-
-                                Update Violation
-
-                            </button>
-
-                        </div>
-
-                    </form>
-
-                </div>
-
+    <form method="POST" class="form-card">
+        <section class="form-section">
+            <div class="form-section-head">
+                <h2 class="form-section-title">Vehicle Information</h2>
+                <p class="form-section-description">Correct the registration and vehicle details.</p>
             </div>
 
+            <div class="field-group">
+                <label for="vehicle_number" class="form-label">Vehicle Number</label>
+                <input
+                    type="text"
+                    id="vehicle_number"
+                    name="vehicle_number"
+                    class="form-control"
+                    value="{{ violation.vehicle_number }}"
+                    maxlength="20"
+                    required
+                >
+            </div>
+        </section>
+
+        <section class="form-section">
+            <div class="form-section-head">
+                <h2 class="form-section-title">Violation Details</h2>
+                <p class="form-section-description">Adjust the violation type, offense location, and date.</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-12 col-md-6">
+                    <div class="field-group">
+                        <label for="violation_type" class="form-label">Violation Type</label>
+                        <select id="violation_type" name="violation_type" class="form-select" required>
+                            {% for type in [
+                                "No Helmet",
+                                "Overspeeding",
+                                "Signal Violation",
+                                "Drunk Driving",
+                                "No Seat Belt",
+                                "Wrong Parking"
+                            ] %}
+                                <option value="{{ type }}" {% if violation.violation_type == type %}selected{% endif %}>
+                                    {{ type }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <div class="field-group">
+                        <label for="location" class="form-label">Location</label>
+                        <input
+                            type="text"
+                            id="location"
+                            name="location"
+                            class="form-control"
+                            value="{{ violation.location }}"
+                            maxlength="200"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <div class="field-group">
+                        <label for="violation_date" class="form-label">Date</label>
+                        <input
+                            type="date"
+                            id="violation_date"
+                            name="violation_date"
+                            class="form-control"
+                            value="{{ violation.violation_date }}"
+                            required
+                        >
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="form-section">
+            <div class="form-section-head">
+                <h2 class="form-section-title">Fine Information</h2>
+                <p class="form-section-description">Revise the recorded fine amount if needed.</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-12 col-md-6">
+                    <div class="field-group">
+                        <label for="fine_amount" class="form-label">Fine Amount</label>
+                        <input
+                            type="number"
+                            id="fine_amount"
+                            name="fine_amount"
+                            class="form-control"
+                            value="{{ violation.fine_amount }}"
+                            min="0"
+                            step="0.01"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <div class="field-group">
+                        <label class="form-label">Payment Status</label>
+                        <div class="status-static {% if violation.status == 'Paid' %}status-paid{% else %}status-unpaid{% endif %}">
+                            <i class="bi bi-circle-fill"></i>
+                            {{ violation.status }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="form-actions">
+            <a href="{{ url_for('history') }}" class="btn-app-secondary">Cancel</a>
+            <button type="submit" class="btn-app-primary">
+                <i class="bi bi-check-lg"></i>
+                Update Violation
+            </button>
         </div>
-
-    </div>
-
+    </form>
 </div>
-
 {% endblock %}

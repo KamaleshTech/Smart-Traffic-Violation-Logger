@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}
+Check Traffic Violation | Smart Traffic Violation Logger
+{% endblock %}
+
+{% block content %}
+<div class="app-container public-page">
+    <section class="public-card">
+        <header class="public-header">
+            <div class="public-kicker">Citizen / Public Access</div>
+            <h1 class="public-title">Check Your Violation</h1>
+            <p class="public-subtitle">Enter a vehicle number to review recorded violations and current payment status.</p>
+        </header>
+
+        <div class="public-body">
+            <form method="GET" action="{{ url_for('check_violation') }}" class="public-search-form">
+                <label for="vehicle_number" class="form-label">Vehicle Number</label>
+                <div class="input-row">
+                    <input
+                        type="text"
+                        id="vehicle_number"
+                        name="vehicle_number"
+                        class="form-control"
+                        value="{{ vehicle_number }}"
+                        placeholder="e.g. TN28AB1234"
+                        autocomplete="off"
+                        required
+                        autofocus
+                    >
+                    <button type="submit" class="btn-app-primary">
+                        <i class="bi bi-search"></i>
+                        Search
+                    </button>
+                </div>
+                <div class="input-hint">Enter the registration number used when the violation was recorded.</div>
+            </form>
+
+            {% if searched %}
+                {% if violations %}
+                    <div class="results-summary">
+                        <div>
+                            <div class="public-challan">Search results for <strong>{{ vehicle_number }}</strong></div>
+                            <h2>Recorded Violations</h2>
+                        </div>
+                        <span class="result-badge">{{ violations|length }} record{% if violations|length != 1 %}s{% endif %}</span>
+                    </div>
+
+                    <div class="status-list">
+                        {% for violation in violations %}
+                            <div class="status-item">
+                                <div class="status-item-main">
+                                    <div class="vehicle-chip-wrap">
+                                        <span class="vehicle-chip">{{ violation.vehicle_number }}</span>
+                                    </div>
+                                    <h3>{{ violation.violation_type }}</h3>
+                                    <p><i class="bi bi-geo-alt"></i> {{ violation.location }}</p>
+                                    <p>{{ violation.violation_date.strftime('%d %B %Y') }} · ₹{{ "%.2f"|format(violation.fine_amount) }}</p>
+                                </div>
+
+                                <div class="status-item-side">
+                                    {% if violation.status == "Paid" %}
+                                        <span class="status-pill paid"><i class="bi bi-check-circle"></i> Paid</span>
+                                    {% else %}
+                                        <span class="status-pill unpaid"><i class="bi bi-exclamation-circle"></i> Unpaid</span>
+                                    {% endif %}
+
+                                    <div class="status-actions">
+                                        <a href="{{ url_for('public_status', violation_id=violation.id) }}" class="btn-app-secondary small-btn">
+                                            <i class="bi bi-file-earmark-text"></i>
+                                            View Challan
+                                        </a>
+                                        {% if violation.status != "Paid" %}
+                                            <a href="{{ url_for('make_payment', violation_id=violation.id) }}" class="btn-app-primary small-btn">
+                                                <i class="bi bi-credit-card"></i>
+                                                Make Payment
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="empty-state">
+                        <div class="empty-icon"><i class="bi bi-search"></i></div>
+                        <h3>No violations found</h3>
+                        <p>No recorded violation matches <strong>{{ vehicle_number }}</strong>.</p>
+                    </div>
+                {% endif %}
+            {% else %}
+                <div class="empty-state centered">
+                    <div class="empty-icon"><i class="bi bi-car-front"></i></div>
+                    <h3>Search by vehicle number</h3>
+                    <p>Your results will show violation details, challan access, and the current payment status.</p>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+</div>
+{% endblock %}
+

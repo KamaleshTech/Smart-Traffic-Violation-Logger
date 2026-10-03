@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}
+Make Payment | Smart Traffic Violation Logger
+{% endblock %}
+
+{% block content %}
+<div class="app-container public-page">
+    <section class="public-card">
+        <header class="public-header">
+            <div class="public-kicker">Citizen Payment</div>
+            <h1 class="public-title">Pay Traffic Challan</h1>
+            <p class="public-subtitle">Review the amount and confirm the payment.</p>
+        </header>
+
+        <div class="public-body">
+            <div class="public-challan">
+                Challan <strong>#{{ "%04d"|format(violation.id) }}</strong>
+            </div>
+
+            <div class="public-details">
+                <div class="public-row">
+                    <span class="public-label">Vehicle Number</span>
+                    <span class="public-value">{{ violation.vehicle_number }}</span>
+                </div>
+                <div class="public-row">
+                    <span class="public-label">Violation</span>
+                    <span class="public-value">{{ violation.violation_type }}</span>
+                </div>
+                <div class="public-row">
+                    <span class="public-label">Fine Amount</span>
+                    <span class="public-value">₹{{ "%.2f"|format(violation.fine_amount) }}</span>
+                </div>
+                <div class="public-row">
+                    <span class="public-label">Current Status</span>
+                    <span class="public-value">Unpaid</span>
+                </div>
+            </div>
+
+            <div class="payment-note">
+                <i class="bi bi-info-circle"></i>
+                <div>
+                    <strong>Demo payment mode</strong>
+                    <p>This project simulates payment confirmation and does not process a live payment gateway transaction.</p>
+                </div>
+            </div>
+
+            <form method="POST" action="{{ url_for('make_payment', violation_id=violation.id) }}" class="payment-form">
+                <input type="hidden" name="payment_confirmation" value="confirm">
+
+                <div class="form-actions justify-end">
+                    <a href="{{ url_for('public_status', violation_id=violation.id) }}" class="btn-app-secondary">
+                        <i class="bi bi-arrow-left"></i>
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn-app-primary">
+                        <i class="bi bi-check2-circle"></i>
+                        Confirm Payment
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+</div>
+{% endblock %}

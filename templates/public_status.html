@@ -4,54 +4,32 @@
 Traffic Violation Status | Smart Traffic Violation Logger
 {% endblock %}
 
-
 {% block content %}
-
 <div class="app-container public-page">
-
     <section class="public-card">
 
-
-        <!-- Header -->
-
         <header class="public-header">
-
-            <div class="public-kicker">
-                Public Verification
-            </div>
+            <div class="public-kicker">Public Verification</div>
 
             <h1 class="public-title">
                 Traffic Violation Status
             </h1>
 
             <p class="public-subtitle">
-                View the current status of this digital challan.
+                View the current payment and record status for this challan.
             </p>
-
         </header>
-
-
-        <!-- Body -->
 
         <div class="public-body">
 
-
             <div class="public-challan">
-
                 Challan
-
-                <strong>
-                    #{{ "%04d"|format(violation.id) }}
-                </strong>
-
+                <strong>#{{ "%04d"|format(violation.id) }}</strong>
             </div>
-
 
             <div class="public-details">
 
-
                 <div class="public-row">
-
                     <span class="public-label">
                         Vehicle Number
                     </span>
@@ -59,12 +37,9 @@ Traffic Violation Status | Smart Traffic Violation Logger
                     <span class="public-value">
                         {{ violation.vehicle_number }}
                     </span>
-
                 </div>
 
-
                 <div class="public-row">
-
                     <span class="public-label">
                         Violation Type
                     </span>
@@ -72,12 +47,9 @@ Traffic Violation Status | Smart Traffic Violation Logger
                     <span class="public-value">
                         {{ violation.violation_type }}
                     </span>
-
                 </div>
 
-
                 <div class="public-row">
-
                     <span class="public-label">
                         Location
                     </span>
@@ -85,12 +57,9 @@ Traffic Violation Status | Smart Traffic Violation Logger
                     <span class="public-value">
                         {{ violation.location }}
                     </span>
-
                 </div>
 
-
                 <div class="public-row">
-
                     <span class="public-label">
                         Date
                     </span>
@@ -98,12 +67,9 @@ Traffic Violation Status | Smart Traffic Violation Logger
                     <span class="public-value">
                         {{ violation.violation_date.strftime('%d %B %Y') }}
                     </span>
-
                 </div>
 
-
                 <div class="public-row">
-
                     <span class="public-label">
                         Fine Amount
                     </span>
@@ -111,46 +77,83 @@ Traffic Violation Status | Smart Traffic Violation Logger
                     <span class="public-value">
                         ₹{{ "%.2f"|format(violation.fine_amount) }}
                     </span>
+                </div>
+
+            </div>
+
+            {% if violation.status == "Paid" %}
+                <div class="public-status-box paid">
+                    <div class="public-status-label">
+                        Payment Status
+                    </div>
+
+                    <div class="public-status-value">
+                        <i class="bi bi-check-circle"></i>
+                        Paid
+                    </div>
+                </div>
+            {% else %}
+                <div class="public-status-box unpaid">
+                    <div class="public-status-label">
+                        Payment Status
+                    </div>
+
+                    <div class="public-status-value">
+                        <i class="bi bi-exclamation-circle"></i>
+                        Unpaid
+                    </div>
+                </div>
+            {% endif %}
+
+            <!-- QR VERIFICATION -->
+            <div class="mt-4 pt-4 border-top">
+
+                <div class="row align-items-center g-4">
+
+                    <div class="col-md-8">
+                        <div class="public-status-label mb-2">
+                            QR Verification
+                        </div>
+
+                        <h3 class="h5 fw-bold mb-2">
+                            Verify this violation record
+                        </h3>
+
+                        <p class="text-muted mb-3">
+                            This QR code can be scanned to open the
+                            public verification page and view the
+                            current violation and payment status.
+                        </p>
+
+                        <div class="d-flex align-items-center gap-2 text-success fw-semibold">
+                            <i class="bi bi-shield-check"></i>
+                            <span>Public verification enabled</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 text-center">
+
+                        <div class="bg-white border rounded-3 p-3 d-inline-block shadow-sm">
+                            <img
+                                src="{{ qr_image_url }}"
+                                alt="QR code for challan #{{ '%04d'|format(violation.id) }}"
+                                width="180"
+                                height="180"
+                                class="img-fluid"
+                            >
+                        </div>
+
+                        <div class="small text-muted mt-2">
+                            Scan to verify challan
+                        </div>
+
+                    </div>
 
                 </div>
 
             </div>
 
-
-            {% if violation.status == "Paid" %}
-
-                <div class="public-status-box paid">
-
-                    <div class="public-status-label">
-                        Payment Status
-                    </div>
-
-                    <div class="public-status-value">
-                        Paid
-                    </div>
-
-                </div>
-
-            {% else %}
-
-                <div class="public-status-box unpaid">
-
-                    <div class="public-status-label">
-                        Payment Status
-                    </div>
-
-                    <div class="public-status-value">
-                        Unpaid
-                    </div>
-
-                </div>
-
-            {% endif %}
-
         </div>
-
     </section>
-
 </div>
-
 {% endblock %}

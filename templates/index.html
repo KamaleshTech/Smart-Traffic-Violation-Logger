@@ -1,284 +1,201 @@
 {% extends "base.html" %}
 
-
 {% block title %}
-Home - Smart Traffic Violation Logger
+Smart Traffic Violation Logger
 {% endblock %}
-
 
 {% block content %}
 
-
-<!-- ========================================================= -->
-<!-- PAGE HEADER -->
-<!-- ========================================================= -->
-
-<div class="page-header">
-
-    <div class="page-kicker">
-        Traffic Management
-    </div>
-
-
-    <h1 class="page-title">
-        Smart Traffic Violation Logger
-    </h1>
-
-
-    <p class="page-description">
-        Record and manage traffic violations, review violation history,
-        update payment status and access digital challans.
-    </p>
-
-</div>
-
-
-<!-- ========================================================= -->
-<!-- MAIN HOME SECTION -->
-<!-- ========================================================= -->
-
-<section class="home-section">
-
-
-    <div class="home-hero">
-
-
-        <!-- ================================================= -->
-        <!-- MAIN ACTION AREA -->
-        <!-- ================================================= -->
-
-        <div class="hero-main">
-
-
-            <div class="hero-eyebrow">
-                Digital Traffic Violation System
+{% if dashboard %}
+<section class="page-shell page-shell-dashboard">
+    <div class="app-container">
+        <div class="dashboard-header">
+            <div>
+                <div class="page-kicker">Operations overview</div>
+                <h1 class="page-title page-title-lg">Officer dashboard</h1>
+                <p class="page-description">
+                    Monitor active records, review pending payments, and keep the traffic enforcement workflow moving.
+                </p>
             </div>
 
+            <div class="header-actions">
+                <a href="{{ url_for('add_violation') }}" class="btn-app-primary">
+                    <i class="bi bi-plus-circle"></i>
+                    Add Violation
+                </a>
+                <a href="{{ url_for('history') }}" class="btn-app-secondary">
+                    <i class="bi bi-table"></i>
+                    View Records
+                </a>
+            </div>
+        </div>
 
-            <h2 class="hero-title">
-                Manage traffic violation records clearly and efficiently.
-            </h2>
+        <div class="metrics-grid">
+            <div class="metric-card metric-total">
+                <span class="metric-label">Total</span>
+                <strong>{{ total_violations }}</strong>
+                <small>Recorded violations</small>
+            </div>
 
+            <div class="metric-card metric-unpaid">
+                <span class="metric-label">Unpaid</span>
+                <strong>{{ unpaid_violations }}</strong>
+                <small>Need follow-up</small>
+            </div>
 
-            <p class="hero-description">
-                Create violation records, review vehicle history,
-                manage challan payment status and provide QR-based
-                public verification.
-            </p>
+            <div class="metric-card metric-paid">
+                <span class="metric-label">Paid</span>
+                <strong>{{ paid_violations }}</strong>
+                <small>Completed</small>
+            </div>
+        </div>
 
+        <div class="dashboard-grid">
+            <section class="panel-card">
+                <div class="panel-header">
+                    <h2>Quick actions</h2>
+                </div>
+
+                <div class="quick-list">
+                    <a href="{{ url_for('add_violation') }}" class="quick-item">
+                        <div class="quick-item-main">
+                            <span class="quick-icon"><i class="bi bi-file-earmark-plus"></i></span>
+                            <div>
+                                <strong>New violation</strong>
+                                <small>Create a fresh challan entry</small>
+                            </div>
+                        </div>
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+
+                    <a href="{{ url_for('history') }}" class="quick-item">
+                        <div class="quick-item-main">
+                            <span class="quick-icon"><i class="bi bi-search"></i></span>
+                            <div>
+                                <strong>Review history</strong>
+                                <small>Search and filter all records</small>
+                            </div>
+                        </div>
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+
+                    <a href="{{ url_for('check_violation') }}" class="quick-item">
+                        <div class="quick-item-main">
+                            <span class="quick-icon"><i class="bi bi-car-front"></i></span>
+                            <div>
+                                <strong>Public check</strong>
+                                <small>Verify violation status</small>
+                            </div>
+                        </div>
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </section>
+
+            <section class="panel-card">
+                <div class="panel-header">
+                    <h2>Recent records</h2>
+                </div>
+
+                {% if recent_violations %}
+                    <div class="recent-list">
+                        {% for violation in recent_violations %}
+                            <div class="recent-item">
+                                <div>
+                                    <strong>{{ violation.vehicle_number }}</strong>
+                                    <small>{{ violation.violation_type }} · {{ violation.location }}</small>
+                                </div>
+                                <span class="status-pill {% if violation.status == 'Paid' %}paid{% else %}unpaid{% endif %}">
+                                    {{ violation.status }}
+                                </span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="empty-state compact">
+                        No recent violation data has been added yet.
+                    </div>
+                {% endif %}
+            </section>
+        </div>
+    </div>
+</section>
+{% else %}
+<section class="page-shell">
+    <div class="app-container">
+        <div class="hero-panel">
+            <div class="hero-copy">
+                <div class="page-kicker page-kicker-light">Traffic Management</div>
+                <h1 class="hero-title">Smart Traffic Violation Logger</h1>
+                <p class="hero-text">
+                    Record violations, review payment status, and keep records accessible for quick public verification.
+                </p>
+
+                <div class="hero-meta">
+                    <span><i class="bi bi-file-earmark-plus"></i> Add violation</span>
+                    <span><i class="bi bi-table"></i> Review history</span>
+                    <span><i class="bi bi-qr-code"></i> Digital challan</span>
+                </div>
+            </div>
 
             <div class="hero-actions">
-
-
-                <a
-                    href="{{ url_for('add_violation') }}"
-                    class="btn btn-warning"
-                >
-
-                    <i class="bi bi-plus-lg"></i>
-
-                    Add Violation
-
-                </a>
-
-
-                <a
-                    href="{{ url_for('history') }}"
-                    class="btn btn-outline-light"
-                >
-
-                    <i class="bi bi-list-check"></i>
-
-                    View Violation History
-
-                </a>
-
-            </div>
-
-
-        </div>
-
-
-        <!-- ================================================= -->
-        <!-- SUPPORTING ACTIONS -->
-        <!-- ================================================= -->
-
-        <div class="hero-side">
-
-
-            <a
-                href="{{ url_for('add_violation') }}"
-                class="hero-side-card"
-            >
-
-                <div class="hero-side-icon">
-
-                    <i class="bi bi-file-earmark-plus"></i>
-
-                </div>
-
-
-                <div class="hero-side-title">
-                    Record a Violation
-                </div>
-
-
-                <div class="hero-side-description">
-
-                    Create a new record with the required
-                    vehicle and violation details.
-
-                </div>
-
-            </a>
-
-
-            <a
-                href="{{ url_for('history') }}"
-                class="hero-side-card"
-            >
-
-                <div class="hero-side-icon">
-
+                <a href="{{ url_for('check_violation') }}" class="btn-app-primary">
                     <i class="bi bi-search"></i>
-
-                </div>
-
-
-                <div class="hero-side-title">
-                    Search Records
-                </div>
-
-
-                <div class="hero-side-description">
-
-                    Search vehicle history and filter
-                    recorded violations.
-
-                </div>
-
-            </a>
-
-
+                    Check Violation
+                </a>
+                <a href="{{ url_for('login') }}" class="btn-app-secondary btn-contrast">
+                    <i class="bi bi-person-lock"></i>
+                    Officer Login
+                </a>
+            </div>
         </div>
 
-    </div>
-
-
-    <!-- ================================================= -->
-    <!-- CORE FUNCTIONS -->
-    <!-- ================================================= -->
-
-    <div class="section-heading">
-
-
-        <h2 class="section-title">
-            Core Functions
-        </h2>
-
-
-        <p class="section-description">
-            The essential tools for managing traffic violation records.
-        </p>
-
-
-    </div>
-
-
-    <div class="feature-grid">
-
-
-        <!-- Add Violation -->
-
-        <a
-            href="{{ url_for('add_violation') }}"
-            class="feature-card"
-        >
-
-            <div class="feature-icon">
-
-                <i class="bi bi-file-earmark-plus"></i>
-
+        <section class="capabilities-block">
+            <div class="section-header simple-header">
+                <div>
+                    <div class="page-kicker">Core functions</div>
+                    <h2 class="section-title">Operational overview</h2>
+                </div>
             </div>
 
+            <div class="feature-grid">
+                <article class="feature-card">
+                    <span class="feature-index">01</span>
+                    <div class="feature-icon"><i class="bi bi-file-earmark-plus"></i></div>
+                    <h3>Record</h3>
+                    <p>Capture vehicle, violation, location, date and fine information in one place.</p>
+                </article>
 
-            <h3 class="feature-title">
-                Add Violation
-            </h3>
+                <article class="feature-card">
+                    <span class="feature-index">02</span>
+                    <div class="feature-icon"><i class="bi bi-search"></i></div>
+                    <h3>Search</h3>
+                    <p>Filter records by vehicle, type, status, or date to review violations quickly.</p>
+                </article>
 
-
-            <p class="feature-description">
-
-                Record vehicle number, violation type,
-                location, date and fine amount.
-
-            </p>
-
-        </a>
-
-
-        <!-- History -->
-
-        <a
-            href="{{ url_for('history') }}"
-            class="feature-card"
-        >
-
-            <div class="feature-icon">
-
-                <i class="bi bi-clock-history"></i>
-
+                <article class="feature-card">
+                    <span class="feature-index">03</span>
+                    <div class="feature-icon"><i class="bi bi-qr-code"></i></div>
+                    <h3>Verify</h3>
+                    <p>Generate challans with QR verification and keep public status checks simple.</p>
+                </article>
             </div>
+        </section>
 
-
-            <h3 class="feature-title">
-                Violation History
-            </h3>
-
-
-            <p class="feature-description">
-
-                Search previous records and filter them
-                by vehicle, date, type or payment status.
-
-            </p>
-
-        </a>
-
-
-        <!-- Challan -->
-
-        <a
-            href="{{ url_for('history') }}"
-            class="feature-card"
-        >
-
-            <div class="feature-icon">
-
-                <i class="bi bi-qr-code"></i>
-
+        <section class="public-cta">
+            <div class="public-cta-icon"><i class="bi bi-shield-check"></i></div>
+            <div class="public-cta-copy">
+                <span>Public verification</span>
+                <h2>Check a violation without logging in.</h2>
+                <p>Use the public status lookup to confirm challan details and current payment status.</p>
             </div>
-
-
-            <h3 class="feature-title">
-                Digital Challan
-            </h3>
-
-
-            <p class="feature-description">
-
-                Access digital challans and QR-based
-                public violation status verification.
-
-            </p>
-
-        </a>
-
-
+            <a href="{{ url_for('check_violation') }}" class="btn-app-secondary">
+                Check Vehicle
+                <i class="bi bi-arrow-right"></i>
+            </a>
+        </section>
     </div>
-
-
 </section>
-
+{% endif %}
 
 {% endblock %}

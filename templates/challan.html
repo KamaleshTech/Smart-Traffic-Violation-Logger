@@ -4,272 +4,101 @@
 Digital Challan #{{ violation.id }} | Smart Traffic Violation Logger
 {% endblock %}
 
-
 {% block content %}
-
 <div class="app-container challan-page">
-
     <article class="challan-document">
-
-
-        <!-- Header -->
-
         <header class="challan-header">
-
             <div>
-
-                <div class="challan-kicker">
-                    Traffic Violation Record
-                </div>
-
-                <h1 class="challan-title">
-                    Digital Traffic Challan
-                </h1>
-
-                <p class="challan-subtitle">
-                    Digital record with public QR verification
-                </p>
-
+                <div class="challan-kicker">Traffic Violation Record</div>
+                <h1 class="challan-title">Digital Traffic Challan</h1>
+                <p class="challan-subtitle">Public verification record with official status details.</p>
             </div>
-
 
             <div class="challan-number">
-
-                <span>
-                    Challan
-                </span>
-
-                <strong>
-                    #{{ "%04d"|format(violation.id) }}
-                </strong>
-
+                <span>Challan</span>
+                <strong>#{{ "%04d"|format(violation.id) }}</strong>
             </div>
-
         </header>
 
-
-        <!-- Content -->
-
         <div class="challan-content">
-
-
-            <!-- Vehicle -->
-
             <section class="challan-section">
-
-                <div class="challan-section-title">
-                    Vehicle Details
-                </div>
-
-
+                <div class="challan-section-title">Vehicle Details</div>
                 <div class="challan-grid">
-
                     <div>
-
-                        <span class="challan-label">
-                            Vehicle Number
-                        </span>
-
-                        <strong class="challan-value">
-                            {{ violation.vehicle_number }}
-                        </strong>
-
+                        <span class="challan-label">Vehicle Number</span>
+                        <strong class="challan-value">{{ violation.vehicle_number }}</strong>
                     </div>
-
-
                     <div>
-
-                        <span class="challan-label">
-                            Violation Date
-                        </span>
-
-                        <strong class="challan-value">
-                            {{ violation.violation_date.strftime('%d %B %Y') }}
-                        </strong>
-
+                        <span class="challan-label">Violation Date</span>
+                        <strong class="challan-value">{{ violation.violation_date.strftime('%d %B %Y') }}</strong>
                     </div>
-
                 </div>
-
             </section>
 
-
-            <!-- Violation -->
-
             <section class="challan-section">
-
-                <div class="challan-section-title">
-                    Violation Details
-                </div>
-
-
+                <div class="challan-section-title">Violation Details</div>
                 <div class="challan-grid">
-
                     <div>
-
-                        <span class="challan-label">
-                            Violation Type
-                        </span>
-
-                        <strong class="challan-value">
-                            {{ violation.violation_type }}
-                        </strong>
-
+                        <span class="challan-label">Violation Type</span>
+                        <strong class="challan-value">{{ violation.violation_type }}</strong>
                     </div>
-
-
                     <div>
-
-                        <span class="challan-label">
-                            Location
-                        </span>
-
-                        <strong class="challan-value">
-                            {{ violation.location }}
-                        </strong>
-
+                        <span class="challan-label">Location</span>
+                        <strong class="challan-value">{{ violation.location }}</strong>
                     </div>
-
                 </div>
-
             </section>
 
-
-            <!-- Fine -->
-
             <section class="challan-section">
-
-                <div class="challan-section-title">
-                    Fine Details
-                </div>
-
-
+                <div class="challan-section-title">Fine Details</div>
                 <div class="challan-grid">
-
                     <div>
-
-                        <span class="challan-label">
-                            Fine Amount
-                        </span>
-
-                        <strong class="challan-value challan-fine">
-                            ₹{{ "%.2f"|format(violation.fine_amount) }}
-                        </strong>
-
+                        <span class="challan-label">Fine Amount</span>
+                        <strong class="challan-value challan-fine">₹{{ "%.2f"|format(violation.fine_amount) }}</strong>
                     </div>
-
-
                     <div>
-
-                        <span class="challan-label">
-                            Payment Status
-                        </span>
-
-
+                        <span class="challan-label">Payment Status</span>
                         {% if violation.status == "Paid" %}
-
-                            <span class="challan-status challan-status-paid">
-                                Paid
-                            </span>
-
+                            <span class="challan-status paid">Paid</span>
                         {% else %}
-
-                            <span class="challan-status challan-status-unpaid">
-                                Unpaid
-                            </span>
-
+                            <span class="challan-status unpaid">Unpaid</span>
                         {% endif %}
-
                     </div>
-
                 </div>
-
             </section>
 
-
-            <!-- QR -->
-
             <section class="challan-section">
-
-                <div class="challan-section-title">
-                    QR Verification
-                </div>
-
-
+                <div class="challan-section-title">QR Verification</div>
                 <div class="challan-qr-layout">
-
-
                     <div>
-
-                        <h2 class="challan-qr-heading">
-                            Verify this violation record
-                        </h2>
-
+                        <h2 class="challan-qr-heading">Verify this violation record</h2>
                         <p class="challan-qr-text">
-                            Scan the QR code to open the public
-                            status page and view the violation
-                            details and current payment status.
+                            Scan the QR code to open the public status page and view the violation details and current payment status.
                         </p>
-
-
                         <div class="challan-verify-note">
-
                             <i class="bi bi-shield-check"></i>
-
                             Public verification
-
                         </div>
-
                     </div>
-
 
                     <div class="challan-qr-box">
-
-                        <img
-                            src="{{ qr_image_url }}"
-                            alt="QR code for challan #{{ violation.id }}"
-                            class="challan-qr-image"
-                        >
-
-                        <div class="challan-qr-caption">
-                            Scan to verify challan
-                        </div>
-
+                        <img src="{{ qr_image_url }}" alt="QR code for challan #{{ violation.id }}" class="challan-qr-image">
+                        <div class="challan-qr-caption">Scan to verify challan</div>
                     </div>
-
                 </div>
-
             </section>
-
         </div>
 
-
-        <!-- Actions -->
-
         <footer class="challan-actions">
-
-            <a
-                href="{{ url_for('history') }}"
-                class="challan-back"
-            >
+            <a href="{{ url_for('history') }}" class="challan-back">
                 <i class="bi bi-arrow-left"></i>
                 Back to History
             </a>
-
-
-            <button
-                type="button"
-                class="challan-print"
-                onclick="window.print()"
-            >
+            <button type="button" class="challan-print" onclick="window.print()">
                 <i class="bi bi-printer"></i>
                 Print Challan
             </button>
-
         </footer>
-
     </article>
-
 </div>
-
 {% endblock %}
